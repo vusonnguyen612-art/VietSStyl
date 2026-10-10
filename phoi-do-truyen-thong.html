@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Phối Đồ Truyền Thống - Vở Học Sinh</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Patrick+Hand&display=swap" rel="stylesheet">
+  <style>
+    /* Reset & CSS cơ bản */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Be Vietnam Pro', sans-serif;
+      background-color: #e5e3da;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      color: #1e1b4b;
+    }
+
+    /* Container cuốn vở học sinh */
+    .notebook-container {
+      width: 100%;
+      max-width: 1140px;
+      background: #fbfbf7;
+      border-radius: 14px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.16), 0 2px 8px rgba(0, 0, 0, 0.08);
+      border: 4px solid #3f3398;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .notebook-header {
+      background: #3f3398;
+      color: #ffffff;
+      padding: 14px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .notebook-header h1 {
+      font-size: 1.2rem;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    .notebook-header .subtext {
+      font-size: 0.82rem;
+      opacity: 0.9;
+    }
+
+    /* Bố cục 2 trang vở (Trang trái & Trang phải) */
+    .notebook-body {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 640px;
+      position: relative;
+    }
+
+    @media (max-width: 900px) {
+      .notebook-body {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Rãnh gáy vở ở giữa */
+    .notebook-spine {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      width: 24px;
+      transform: translateX(-50%);
+      background: linear-gradient(to right, rgba(0, 0, 0, 0.04), rgba(0, 0, 0, 0.14) 50%, rgba(0, 0, 0, 0.04));
+      z-index: 10;
+      pointer-events: none;
+    }
+
+    @media (max-width: 900px) {
+      .notebook-spine {
+        display: none;
+      }
+    }
+
+    /* Trang giấy vở học sinh có họa tiết ô ly */
+    .page {
+      padding: 24px;
+      position: relative;
+      background-color: #fcfcf9;
+      background-image: 
+        linear-gradient(to right, rgba(147, 197, 253, 0.28) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(147, 197, 253, 0.28) 1px, transparent 1px);
+      background-size: 22px 22px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    /* Đường kẻ lề đỏ thẳng đứng đặc trưng vở học sinh Việt Nam */
+    .red-margin {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 42px;
+      width: 2px;
+      background: #ea384d;
+      opacity: 0.75;
+      pointer-events: none;
+    }
+
+    .page-inner {
+      margin-left: 28px;
+      z-index: 2;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .page-header-line {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.75rem;
+      color: #64748b;
+      margin-bottom: 12px;
+      border-bottom: 1px solid rgba(63, 51, 152, 0.12);
+      padding-bottom: 4px;
+    }
+
+    /* Khung lời phê cô giáo */
+    .teacher-box {
+      background: #ffffff;
+      border: 2px solid #ea384d;
+      border-radius: 10px;
+      padding: 12px 16px;
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      margin-bottom: 14px;
+      box-shadow: 2px 3px 0px rgba(234, 56, 77, 0.15);
+    }
+
+    .score-circle {
+      width: 58px;
+      height: 58px;
+      border: 3px solid #ea384d;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ea384d;
+      font-size: 1.85rem;
+      font-weight: 700;
+      font-family: 'Patrick Hand', cursive;
+      flex-shrink: 0;
+      background: #fff5f5;
+    }
+
+    .teacher-text {
+      font-family: 'Patrick Hand', cursive;
+      color: #b91c1c;
+      font-size: 1.15rem;
+      line-height: 1.35;
+    }
+
+    .teacher-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #ea384d;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 2px;
+    }
+
+    /* Khu vực nhân vật */
+    .avatar-stage {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 400px;
+      position: relative;
+    }
+
+    .avatar-svg {
+      width: 100%;
+      max-width: 280px;
+      height: 420px;
+      filter: drop-shadow(0 8px 12px rgba(0, 0, 0, 0.08));
+    }
+
+    .avatar-part {
+      cursor: pointer;
+      transition: filter 0.15s ease;
+    }
+
+    .avatar-part:hover {
+      filter: brightness(1.08) drop-shadow(0 0 3px #3f3398);
+    }
+
+    .avatar-note {
+      font-size: 0.8rem;
+      color: #3f3398;
+      margin-top: 10px;
+      text-align: center;
+      font-weight: 600;
+      background: rgba(63, 51, 152, 0.08);
+      padding: 5px 14px;
+      border-radius: 20px;
+      border: 1px dashed #3f3398;
+    }
+
+    /* TRANG PHẢI: TÙY CHỈNH */
+    .tabs-bar {
+      display: flex;
+      border-bottom: 2px solid #3f3398;
+      margin-bottom: 14px;
+      gap: 4px;
+      overflow-x: auto;
+    }
+
+    .tab-btn {
+      padding: 8px 14px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      background: none;
+      border: none;
+      color: #64748b;
+      cursor: pointer;
+      border-radius: 6px 6px 0 0;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+
+    .tab-btn.active {
+      background: #3f3398;
+      color: #ffffff;
+    }
+
+    .section-title {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: #3f3398;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* Style Cards Grid */
+    .styles-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .style-card {
+      border: 2px solid #cbd5e1;
+      border-radius: 8px;
+      padding: 10px;
+      background: #ffffff;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: left;
+    }
+
+    .style-card:hover {
+      border-color: #818cf8;
+    }
+
+    .style-card.selected {
+      border-color: #3f3398;
+      background: #f5f3ff;
+      box-shadow: 0 0 0 1px #3f3398;
+    }
+
+    .style-card h4 {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: #1e1b4b;
+      margin-bottom: 2px;
+    }
+
+    .style-card p {
+      font-size: 0.72rem;
+      color: #64748b;
+      line-height: 1.3;
+    }
+
+    /* Controls da & tóc */
+    .custom-row {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      margin-bottom: 12px;
+      background: #ffffff;
+      padding: 8px 12px;
+      border-radius: 8px;
+      border: 1px solid #e2e8f0;
+    }
+
+    .skin-circles {
+      display: flex;
+      gap: 8px;
+    }
+
+    .skin-circle {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 2px solid #94a3b8;
+      cursor: pointer;
+      transition: transform 0.15s;
+    }
+
+    .skin-circle:hover {
+      transform: scale(1.15);
+    }
+
+    .skin-circle.selected {
+      border-color: #3f3398;
+      border-width: 3px;
+      transform: scale(1.15);
+    }
+
+    .hair-radios {
+      display: flex;
+      gap: 12px;
+    }
+
+    .hair-radios label {
+      font-size: 0.82rem;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      cursor: pointer;
+      font-weight: 500;
+    }
+
+    /* Textarea AI */
+    .ai-textarea {
+      width: 100%;
+      height: 60px;
+      border: 1.5px solid #cbd5e1;
+      border-radius: 6px;
+      padding: 8px;
+      font-family: inherit;
+      font-size: 0.8rem;
+      resize: none;
+      outline: none;
+      background: #ffffff;
+    }
+
+    .ai-textarea:focus {
+      border-color: #3f3398;
+    }
+
+    /* Button chấm điểm màu #3f3398 */
+    .btn-grade {
+      margin-top: 10px;
+      background: #3f3398;
+      color: #ffffff;
+      border: none;
+      border-radius: 8px;
+      padding: 12px 20px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 4px 12px rgba(63, 51, 152, 0.25);
+      transition: all 0.2s;
+      width: 100%;
+    }
+
+    .btn-grade:hover {
+      background: #32287a;
+      transform: translateY(-1px);
+    }
+
+    footer {
+      margin-top: 14px;
+      font-size: 0.78rem;
+      color: #64748b;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="notebook-container">
+    <div class="notebook-header">
+      <h1>📓 BÀI TẬP: PHỐI ĐỒ TRUYỀN THỐNG VIỆT NAM</h1>
+      <span class="subtext">Học sinh: Nguyễn Minh Tâm · Lớp 5A</span>
+    </div>
+
+    <div class="notebook-body">
+      <div class="notebook-spine"></div>
+
+      <!-- TRANG TRÁI (Khu vực Hiển thị & Kết quả) -->
+      <div class="page">
+        <div class="red-margin"></div>
+        <div class="page-inner">
+          <div class="page-header-line">
+            <span>Thứ Hai, ngày 20/11/2026</span>
+            <span>Trang 01: Bài Làm</span>
+          </div>
+
+          <!-- Khung "Lời phê của cô giáo" -->
+          <div class="teacher-box">
+            <div class="score-circle" id="score-text">10</div>
+            <div>
+              <div class="teacher-label">Lời phê của cô giáo:</div>
+              <div class="teacher-text" id="review-text">Phối đồ rất hài hòa, mang đậm bản sắc Nam Bộ! Rất khen ngợi em!</div>
+            </div>
+          </div>
+
+          <!-- Khu vực Nhân vật (Avatar) -->
+          <div class="avatar-stage">
+            <svg class="avatar-svg" viewBox="0 0 240 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="strawGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#f7e4a6"/>
+                  <stop offset="60%" stop-color="#edd387"/>
+                  <stop offset="100%" stop-color="#d4b462"/>
+                </linearGradient>
+              </defs>
+
+              <!-- Phụ kiện: Nón lá -->
+              <g id="hat-group" class="avatar-part" onclick="toggleHat()" title="Chạm để ẩn/hiện nón lá">
+                <path d="M120 16 L28 84 L212 84 Z" fill="url(#strawGrad)" stroke="#1c1917" stroke-width="2.8" stroke-linejoin="round"/>
+                <path d="M42 74 Q120 64 198 74" stroke="#c29d44" stroke-width="1.8" fill="none"/>
+                <path d="M60 58 Q120 48 180 58" stroke="#c29d44" stroke-width="1.8" fill="none"/>
+                <path d="M80 42 Q120 34 160 42" stroke="#c29d44" stroke-width="1.8" fill="none"/>
+                <line x1="120" y1="16" x2="120" y2="84" stroke="#c29d44" stroke-width="1.6"/>
+              </g>
+
+              <!-- Đầu & Mặt & Tóc & Cổ -->
+              <g id="head-group" class="avatar-part" onclick="cycleHead()" title="Chạm để đổi tông da hoặc kiểu tóc">
+                <rect x="110" y="94" width="20" height="20" id="neck-rect" fill="#f6caa9" stroke="#1c1917" stroke-width="2.2"/>
+                <circle cx="94" cy="78" r="5.5" id="ear-l" fill="#f6caa9" stroke="#1c1917" stroke-width="2.2"/>
+                <circle cx="146" cy="78" r="5.5" id="ear-r" fill="#f6caa9" stroke="#1c1917" stroke-width="2.2"/>
+                
+                <ellipse cx="120" cy="76" rx="26" ry="29" id="head-circle" fill="#f6caa9" stroke="#1c1917" stroke-width="2.8"/>
+                <circle cx="106" cy="83" r="4.5" fill="#f87171" opacity="0.4"/>
+                <circle cx="134" cy="83" r="4.5" fill="#f87171" opacity="0.4"/>
+
+                <!-- Ngũ quan -->
+                <circle cx="111" cy="74" r="3.2" fill="#1c1917"/>
+                <circle cx="112" cy="73" r="1.1" fill="#ffffff"/>
+                <circle cx="129" cy="74" r="3.2" fill="#1c1917"/>
+                <circle cx="130" cy="73" r="1.1" fill="#ffffff"/>
+                <path d="M115 88 Q120 94 125 88" stroke="#1c1917" stroke-width="2.4" stroke-linecap="round" fill="none"/>
+
+                <!-- Kiểu tóc -->
+                <path id="hair-shape" d="M94 72 C94 50 146 50 146 72 C138 64 128 62 120 64 C110 62 102 65 94 72 Z" fill="#1c1917" stroke="#1c1917" stroke-width="2.2"/>
+              </g>
+
+              <!-- Thân: Áo bà ba & Hai tay -->
+              <g id="shirt-group" class="avatar-part" onclick="cycleShirt()" title="Chạm để đổi màu áo bà ba">
+                <!-- Tay trái -->
+                <path d="M86 112 L64 212 L84 216 L98 126 Z" id="sleeve-l" fill="#df4526" stroke="#1c1917" stroke-width="2.6" stroke-linejoin="round"/>
+                <!-- Tay phải -->
+                <path d="M154 112 L176 212 L156 216 L142 126 Z" id="sleeve-r" fill="#df4526" stroke="#1c1917" stroke-width="2.6" stroke-linejoin="round"/>
+
+                <!-- Bàn tay -->
+                <path d="M66 213 Q62 232 72 238 Q82 235 83 216 Z" id="hand-l" fill="#f6caa9" stroke="#1c1917" stroke-width="2.2"/>
+                <path d="M174 213 Q178 232 168 238 Q158 235 157 216 Z" id="hand-r" fill="#f6caa9" stroke="#1c1917" stroke-width="2.2"/>
+
+                <!-- Thân áo bà ba -->
+                <path d="M94 110 L146 110 L154 224 L138 228 L120 225 L102 228 L86 224 Z" id="shirt-body" fill="#df4526" stroke="#1c1917" stroke-width="2.8" stroke-linejoin="round"/>
+
+                <!-- Nẹp áo & cúc áo -->
+                <line x1="120" y1="110" x2="120" y2="225" stroke="#1c1917" stroke-width="2.2"/>
+                <circle cx="120" cy="126" r="2.2" fill="#ffffff" stroke="#1c1917" stroke-width="1.2"/>
+                <circle cx="120" cy="146" r="2.2" fill="#ffffff" stroke="#1c1917" stroke-width="1.2"/>
+                <circle cx="120" cy="166" r="2.2" fill="#ffffff" stroke="#1c1917" stroke-width="1.2"/>
+                <circle cx="120" cy="186" r="2.2" fill="#ffffff" stroke="#1c1917" stroke-width="1.2"/>
+                <circle cx="120" cy="206" r="2.2" fill="#ffffff" stroke="#1c1917" stroke-width="1.2"/>
+
+                <!-- 2 Túi áo bà ba -->
+                <rect x="95" y="190" width="18" height="20" rx="3.5" id="pocket-l" fill="#df4526" stroke="#1c1917" stroke-width="2.2"/>
+                <rect x="127" y="190" width="18" height="20" rx="3.5" id="pocket-r" fill="#df4526" stroke="#1c1917" stroke-width="2.2"/>
+              </g>
+
+              <!-- Chân: Quần dài -->
+              <g id="pants-group" class="avatar-part" onclick="cyclePants()" title="Chạm để đổi màu quần">
+                <path d="M90 220 L94 374 L119 374 L120 250 L121 250 L122 374 L146 374 L150 220 Z" id="pants-shape" fill="#222222" stroke="#1c1917" stroke-width="2.8" stroke-linejoin="round"/>
+              </g>
+
+              <!-- Giày: Guốc mộc -->
+              <g id="shoes-group" class="avatar-part" onclick="cycleShoes()" title="Chạm để đổi màu guốc">
+                <rect x="92" y="374" width="26" height="11" rx="3.5" id="shoe-l" fill="#784421" stroke="#1c1917" stroke-width="2.2"/>
+                <rect x="122" y="374" width="26" height="11" rx="3.5" id="shoe-r" fill="#784421" stroke="#1c1917" stroke-width="2.2"/>
+              </g>
+            </svg>
+
+            <!-- Ghi chú dưới chân nhân vật -->
+            <div class="avatar-note">👆 Chạm vào đầu, áo, quần hoặc giày để sửa phần đó</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TRANG PHẢI (Khu vực Tùy chỉnh) -->
+      <div class="page">
+        <div class="red-margin"></div>
+        <div class="page-inner">
+          <div class="page-header-line">
+            <span>Môn: Mỹ Thuật Dân Tộc</span>
+            <span>Trang 02: Tùy Chỉnh</span>
+          </div>
+
+          <!-- Thanh điều hướng Tabs -->
+          <div class="tabs-bar">
+            <button class="tab-btn" onclick="switchTab(this, 'dip')">Dịp</button>
+            <button class="tab-btn" onclick="switchTab(this, 'ao')">Áo</button>
+            <button class="tab-btn" onclick="switchTab(this, 'mau')">Màu</button>
+            <button class="tab-btn" onclick="switchTab(this, 'phukien')">Phụ kiện</button>
+            <button class="tab-btn active" onclick="switchTab(this, 'hoanthien')">Hoàn thiện</button>
+          </div>
+
+          <!-- Chọn Phong cách -->
+          <div class="section-title">Chọn Phong cách:</div>
+          <div class="styles-grid">
+            <div class="style-card selected" onclick="setStyle('classic', this)">
+              <h4>Chuẩn truyền thống</h4>
+              <p>Áo bà ba mộc mạc, nón lá đồng quê sông nước.</p>
+            </div>
+            <div class="style-card" onclick="setStyle('co-phong', this)">
+              <h4>Cổ phong</h4>
+              <p>Khí chất trang nhã, tôn vinh nét đẹp tiền nhân.</p>
+            </div>
+            <div class="style-card" onclick="setStyle('retro', this)">
+              <h4>Retro Sài Gòn</h4>
+              <p>Phong thái thanh lịch thập niên 70 rực rỡ.</p>
+            </div>
+            <div class="style-card" onclick="setStyle('streetwear', this)">
+              <h4>Streetwear remix</h4>
+              <p>Cách tân hiện đại kết hợp cổ điển năng động.</p>
+            </div>
+          </div>
+
+          <!-- Tùy chỉnh Nhân vật -->
+          <div class="section-title">Tùy chỉnh Nhân vật:</div>
+          <div class="custom-row">
+            <span style="font-size:0.82rem; font-weight:700;">Tông da:</span>
+            <div class="skin-circles">
+              <div class="skin-circle" style="background:#fde5d4;" onclick="setSkin('#fde5d4', this)" title="Trắng hồng"></div>
+              <div class="skin-circle selected" style="background:#f6caa9;" onclick="setSkin('#f6caa9', this)" title="Tự nhiên"></div>
+              <div class="skin-circle" style="background:#d9a076;" onclick="setSkin('#d9a076', this)" title="Bánh mật"></div>
+              <div class="skin-circle" style="background:#b4784a;" onclick="setSkin('#b4784a', this)" title="Răm nắng"></div>
+            </div>
+          </div>
+
+          <div class="custom-row">
+            <span style="font-size:0.82rem; font-weight:700;">Tóc:</span>
+            <div class="hair-radios">
+              <label><input type="radio" name="hair" value="bun" onchange="setHair('bun')"> Búi</label>
+              <label><input type="radio" name="hair" value="low" onchange="setHair('low')"> Buộc thấp</label>
+              <label><input type="radio" name="hair" value="short" checked onchange="setHair('short')"> Tóc ngắn</label>
+            </div>
+          </div>
+
+          <!-- Khu vực Nhập liệu AI -->
+          <div style="margin-bottom: 12px;">
+            <div class="section-title">Mong muốn thêm (không bắt buộc):</div>
+            <textarea class="ai-textarea" id="ai-wishes" placeholder="Nhập mong muốn (ví dụ: đổi áo xanh lá, quần trắng lụa, khăn rằn)..."></textarea>
+          </div>
+
+          <!-- Logic Chấm điểm ngẫu nhiên -->
+          <button class="btn-grade" onclick="gradeRandomly()">
+            <span>✨ Chấm điểm ngẫu nhiên</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    Phối đồ truyền thống Việt Nam · Thiết kế chuẩn giao diện vở ô ly học sinh tiểu học
+  </footer>
+
+  <script>
+    // ==========================================
+    // LOGIC JAVASCRIPT TƯƠNG TÁC
+    // ==========================================
+
+    // Danh sách màu áo bà ba xoay vòng
+    const shirtColors = ['#df4526', '#2e8b57', '#7a492c', '#e5a823', '#844c82', '#2563eb'];
+    // Danh sách màu quần xoay vòng
+    const pantsColors = ['#222222', '#f7f6f0', '#4a3b32'];
+    // Danh sách màu guốc
+    const shoeColors = ['#784421', '#222222', '#a0522d'];
+
+    let currentShirtIdx = 0;
+    let currentPantsIdx = 0;
+    let currentShoeIdx = 0;
+    let hasHat = true;
+
+    // Danh sách lời phê của cô giáo
+    const reviews = [
+      { score: '10', comment: 'Phối đồ rất hài hòa, mang đậm bản sắc Nam Bộ! Rất khen ngợi em!' },
+      { score: '10', comment: 'Tuyệt tác học trò! Màu áo bà ba ấm áp kết hợp quần đen lụa và nón lá rất có hồn.' },
+      { score: '9.5', comment: 'Bài phối màu rất có gu! Đậm đà phong vị sông nước, đường nét gọn gàng.' },
+      { score: '9.0', comment: 'Trang phục thể hiện tình yêu văn hóa dân tộc sâu sắc. Em rất có khiếu thẩm mỹ!' },
+      { score: '8.5', comment: 'Ý tưởng phối màu sáng tạo, mộc mạc và thanh lịch, tiếp tục phát huy em nhé!' }
+    ];
+
+    // Hàm đổi màu áo xoay vòng khi click trực tiếp vào Áo ở trang trái
+    function cycleShirt() {
+      currentShirtIdx = (currentShirtIdx + 1) % shirtColors.length;
+      setShirtColor(shirtColors[currentShirtIdx]);
+    }
+
+    function setShirtColor(color) {
+      document.getElementById('shirt-body').setAttribute('fill', color);
+      document.getElementById('sleeve-l').setAttribute('fill', color);
+      document.getElementById('sleeve-r').setAttribute('fill', color);
+      document.getElementById('pocket-l').setAttribute('fill', color);
+      document.getElementById('pocket-r').setAttribute('fill', color);
+    }
+
+    // Hàm đổi màu quần xoay vòng khi click trực tiếp vào Quần ở trang trái
+    function cyclePants() {
+      currentPantsIdx = (currentPantsIdx + 1) % pantsColors.length;
+      document.getElementById('pants-shape').setAttribute('fill', pantsColors[currentPantsIdx]);
+    }
+
+    // Hàm đổi màu guốc khi click vào giày
+    function cycleShoes() {
+      currentShoeIdx = (currentShoeIdx + 1) % shoeColors.length;
+      document.getElementById('shoe-l').setAttribute('fill', shoeColors[currentShoeIdx]);
+      document.getElementById('shoe-r').setAttribute('fill', shoeColors[currentShoeIdx]);
+    }
+
+    // Hàm đổi tông da xoay vòng khi click vào Đầu ở trang trái
+    function cycleHead() {
+      const skins = ['#fde5d4', '#f6caa9', '#d9a076', '#b4784a'];
+      const current = document.getElementById('head-circle').getAttribute('fill');
+      const idx = skins.indexOf(current);
+      const nextColor = skins[(idx + 1) % skins.length];
+      setSkin(nextColor);
+    }
+
+    // Hàm đổi tông da từ 4 nút tròn ở trang phải
+    function setSkin(color, el) {
+      document.getElementById('head-circle').setAttribute('fill', color);
+      document.getElementById('neck-rect').setAttribute('fill', color);
+      document.getElementById('ear-l').setAttribute('fill', color);
+      document.getElementById('ear-r').setAttribute('fill', color);
+      document.getElementById('hand-l').setAttribute('fill', color);
+      document.getElementById('hand-r').setAttribute('fill', color);
+
+      // Cập nhật trạng thái viền nút tròn tông da
+      if (el) {
+        document.querySelectorAll('.skin-circle').forEach(c => c.classList.remove('selected'));
+        el.classList.add('selected');
+      }
+    }
+
+    // Hàm đổi kiểu tóc khi chọn radio buttons
+    function setHair(style) {
+      const hair = document.getElementById('hair-shape');
+      if (style === 'braids') {
+        // Tóc tết hai bên
+        hair.setAttribute('d', 'M94 72 C94 48 146 48 146 72 C136 63 104 63 94 72 Z M102 75 C98 95 98 135 106 155 M138 75 C142 95 142 135 134 155');
+      } else if (style === 'bun') {
+        // Tóc búi
+        hair.setAttribute('d', 'M94 72 C94 48 146 48 146 72 C136 63 104 63 94 72 Z M110 50 C110 38 130 38 130 50 Z');
+      } else if (style === 'low') {
+        // Tóc buộc thấp
+        hair.setAttribute('d', 'M94 72 C94 48 146 48 146 72 C136 63 104 63 94 72 Z M114 96 L126 96 L126 112 L114 112 Z');
+      } else {
+        // Tóc ngắn
+        hair.setAttribute('d', 'M94 72 C94 50 146 50 146 72 C138 64 128 62 120 64 C110 62 102 65 94 72 Z');
+      }
+    }
+
+    // Hàm bật/tắt nón lá khi chạm vào nón
+    function toggleHat() {
+      hasHat = !hasHat;
+      document.getElementById('hat-group').style.display = hasHat ? 'block' : 'none';
+    }
+
+    // Hàm chuyển tab
+    function switchTab(btn, tabId) {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    }
+
+    // Hàm chọn phong cách từ danh sách cards
+    function setStyle(style, cardEl) {
+      document.querySelectorAll('.style-card').forEach(c => c.classList.remove('selected'));
+      cardEl.classList.add('selected');
+
+      if (style === 'classic') {
+        setShirtColor('#df4526');
+        document.getElementById('pants-shape').setAttribute('fill', '#222222');
+        hasHat = true;
+        document.getElementById('hat-group').style.display = 'block';
+      } else if (style === 'co-phong') {
+        setShirtColor('#7a492c');
+        document.getElementById('pants-shape').setAttribute('fill', '#222222');
+        hasHat = true;
+        document.getElementById('hat-group').style.display = 'block';
+      } else if (style === 'retro') {
+        setShirtColor('#e5a823');
+        document.getElementById('pants-shape').setAttribute('fill', '#f7f6f0');
+        hasHat = false;
+        document.getElementById('hat-group').style.display = 'none';
+      } else if (style === 'streetwear') {
+        setShirtColor('#2563eb');
+        document.getElementById('pants-shape').setAttribute('fill', '#222222');
+        hasHat = true;
+        document.getElementById('hat-group').style.display = 'block';
+      }
+    }
+
+    // Hàm chấm điểm ngẫu nhiên từ 8 đến 10
+    function gradeRandomly() {
+      const idx = Math.floor(Math.random() * reviews.length);
+      const chosen = reviews[idx];
+      const scoreEl = document.getElementById('score-text');
+      const reviewEl = document.getElementById('review-text');
+
+      scoreEl.style.transform = 'scale(1.2) rotate(8deg)';
+      setTimeout(() => {
+        scoreEl.innerText = chosen.score;
+        reviewEl.innerText = chosen.comment;
+        scoreEl.style.transform = 'scale(1) rotate(0deg)';
+      }, 200);
+    }
+  </script>
+</body>
+</html>

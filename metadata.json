@@ -1,0 +1,8 @@
+{
+  "name": "Remix Remix Remix Remix Remix Remix Remix Remix Remix Remix Remix Remix Phối Đồ Truyền Thống - Vở Học Sinh",
+  "description": "Ứng dụng tương tác phối đồ truyền thống Việt Nam với giao diện cuốn vở học sinh và nhân vật tương tác trực quan.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

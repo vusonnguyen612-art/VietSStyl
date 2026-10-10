@@ -1,0 +1,71 @@
+@import "tailwindcss";
+
+@theme {
+  --font-serif: 'Noto Serif', Georgia, serif;
+  --font-sans: 'Be Vietnam Pro', system-ui, -apple-system, sans-serif;
+}
+
+@layer utilities {
+  /* Họa tiết giấy vở học sinh ô ly Việt Nam */
+  .notebook-grid {
+    background-color: #fbfbf7;
+    background-image: 
+      linear-gradient(to right, rgba(147, 197, 253, 0.28) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(147, 197, 253, 0.28) 1px, transparent 1px);
+    background-size: 22px 22px;
+  }
+
+  .notebook-subgrid {
+    background-color: #fbfbfa;
+    background-image: 
+      linear-gradient(to right, rgba(99, 102, 241, 0.08) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(99, 102, 241, 0.08) 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
+
+  /* Font viết tay lời phê của cô giáo */
+  .font-handwriting {
+    font-family: 'Patrick Hand', 'Caveat', cursive;
+  }
+
+  /* Phong cách thẻ bài sưu tầm hoàng kim */
+  .tcg-gold-border {
+    border-color: #D4AF37;
+    box-shadow: 0 0 12px rgba(212, 175, 55, 0.25), inset 0 0 4px rgba(212, 175, 55, 0.2);
+  }
+
+  .tcg-gold-gradient {
+    background: linear-gradient(135deg, #FDF4DC 0%, #E6C766 50%, #C59B27 100%);
+  }
+
+  .tcg-ruby-gradient {
+    background: linear-gradient(135deg, #8B1528 0%, #5C0B18 100%);
+  }
+
+  /* Hiệu ứng ánh kim lấp lánh cho thẻ bài */
+  .card-shimmer {
+    background: linear-gradient(
+      115deg,
+      transparent 20%,
+      rgba(255, 255, 255, 0.35) 45%,
+      rgba(253, 224, 71, 0.45) 50%,
+      rgba(255, 255, 255, 0.35) 55%,
+      transparent 80%
+    );
+    background-size: 200% 200%;
+  }
+}
+
+/* Tùy chỉnh thanh cuộn thẻ bài */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(220, 210, 195, 0.3);
+}
+::-webkit-scrollbar-thumb {
+  background: #8B1528;
+  border-radius: 9999px;
+}
+
